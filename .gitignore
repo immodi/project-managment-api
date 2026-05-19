@@ -1,0 +1,72 @@
+
+# ===============================
+# Build output
+# ===============================
+**/bin/
+**/obj/
+
+# ===============================
+# Rider / JetBrains
+# ===============================
+.idea/
+*.sln.DotSettings.user
+*.suo
+*.user
+
+# ===============================
+# Visual Studio
+# ===============================
+.vs/
+*.VC.db
+
+# ===============================
+# .NET / ASP.NET
+# ===============================
+*.log
+*.cache
+*.dll
+*.pdb
+*.exe
+*.runtimeconfig.json
+*.deps.json
+*.staticwebassets.*
+
+# EF Core
+Migrations/*Snapshot.cs
+
+# ===============================
+# Test results
+# ===============================
+TestResults/
+*.trx
+
+# ===============================
+# Docker
+# ===============================
+.dockerignore
+docker-compose.override.yml
+
+# ===============================
+# OS junk
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Node (if ever added frontend later)
+# ===============================
+node_modules/
+dist/
+build/
+
+# ===============================
+# Secrets / configs
+# ===============================
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
+
+# keep base config if needed:
+!appsettings.json
+
+dump.sh
