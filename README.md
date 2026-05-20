@@ -1,28 +1,189 @@
 # Project Management API
 
-A backend REST API for a simple project management system built with ASP.NET Core 9, Entity Framework Core, and SQL Server (Docker).
+A scalable backend API built with ASP.NET Core Web API using Clean Architecture principles.
 
-## Features
+---
+
+# Tech Stack
+
+- .NET 9
+- ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server
 - JWT Authentication
-- Projects CRUD
-- Tasks CRUD
-- FluentValidation
-- Clean Architecture
+- Docker & Docker Compose
+- xUnit
 
-## Setup
+---
 
-### Run SQL Server
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ngPassyazi" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+# Architecture
 
-### Run migrations
-dotnet ef database update --project Infrastructure --startup-project API
+The project follows Clean Architecture and is divided into the following layers:
 
-### Run API
-dotnet run --project API
+- API
+- Application
+- Domain
+- Infrastructure
 
-## Endpoints
-- /api/auth/register
-- /api/auth/login
-- /api/projects
-- /api/tasks
+Key practices used:
 
+- Dependency Injection
+- SOLID Principles
+- DTOs
+- Global Exception Handling
+- Validation
+- Repository Pattern
+
+---
+
+# Features
+
+## Authentication
+
+- Register
+- Login
+- JWT Authentication
+
+## Projects
+
+- Create Project
+- Get All Projects
+- Get Project By Id
+- Update Project
+- Delete Project
+
+## Tasks
+
+- Create Task
+- Update Task Status
+- Get Tasks By Project
+- Delete Task
+
+---
+
+# Running the Project
+
+## Option 1 — Docker (Recommended)
+
+### Run Containers
+
+```bash
+docker-compose up --build
+```
+
+Docker Compose automatically provides all required environment variables.
+
+---
+
+## API URL
+
+```txt
+http://localhost:5000
+```
+
+## Swagger Documentation
+
+```txt
+http://localhost:5000/swagger
+```
+
+---
+
+# Option 2 — Local Development
+
+## Requirements
+
+- .NET 9 SDK
+- SQL Server
+
+---
+
+## Set Environment Variables
+
+### Linux/macOS
+
+```bash
+export ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=ProjectManagementDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+
+export Jwt__Key="THIS_IS_A_SUPER_SECRET_KEY_CHANGE_IT"
+export Jwt__Issuer="ProjectManagement"
+export Jwt__Audience="ProjectManagementUsers"
+export Jwt__ExpiryMinutes="60"
+```
+
+### Windows PowerShell
+
+```powershell
+$env:ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=ProjectManagementDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+
+$env:Jwt__Key="THIS_IS_A_SUPER_SECRET_KEY_CHANGE_IT"
+$env:Jwt__Issuer="ProjectManagement"
+$env:Jwt__Audience="ProjectManagementUsers"
+$env:Jwt__ExpiryMinutes="60"
+```
+
+---
+
+# Apply Database Migrations
+
+```bash
+dotnet ef database update --project ProjectManagement/src/Infrastructure --startup-project ProjectManagement/src/ProjectManagement.Api
+```
+
+---
+
+# Run the API
+
+```bash
+dotnet run --project ProjectManagement/src/ProjectManagement.Api
+```
+
+---
+
+# Running Tests
+
+```bash
+dotnet test ProjectManagement/tests/Tests
+```
+
+---
+
+# API Documentation
+
+Swagger/OpenAPI documentation is available at:
+
+```txt
+/swagger
+```
+
+---
+
+# Authentication
+
+The API uses JWT Bearer Authentication.
+
+### Steps
+
+1. Register a user
+2. Login to receive JWT token
+3. Click "Authorize" in Swagger
+4. Enter token as:
+
+```txt
+Bearer YOUR_TOKEN
+```
+
+---
+
+# Database Migrations
+
+Database migration files are included in the repository.
+
+---
+
+# Notes
+
+- Environment variables are used for sensitive configuration.
+- Swagger is enabled for API testing and documentation.
+- The project is structured for scalability and maintainability.
+- Docker support is included for easier setup and execution.

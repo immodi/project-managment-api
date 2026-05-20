@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ProjectManagement/src/ProjectManagement.Api/Dockerfile
+
+    ports:
+      - "5000:8080"
+
+    depends_on:
+      - sqlserver
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=ProjectManagementDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+
+      Jwt__Key: "THIS_IS_A_SUPER_SECRET_KEY_CHANGE_IT"
+      Jwt__Issuer: "ProjectManagement"
+      Jwt__Audience: "ProjectManagementUsers"
+      Jwt__ExpiryMinutes: "60"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    container_name: projectmanagement-sqlserver
+
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong@Passw0rd"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:

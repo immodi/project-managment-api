@@ -3,5 +3,5 @@ namespace Application.DTOs.Auth;
 
 public class AuthResponse
 {
-    public required string Token { get; set; } 
+    public string Token { get; set; } = string.Empty;
 }
