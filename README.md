@@ -80,7 +80,7 @@ http://localhost:5000
 Swagger:
 
 ```txt
-http://localhost:5000/swagger
+http://localhost:5000/
 ```
 
 ---
@@ -192,7 +192,7 @@ http://localhost:5094
 Swagger documentation:
 
 ```txt
-http://localhost:5094/swagger
+http://localhost:5094/
 ```
 
 ---
