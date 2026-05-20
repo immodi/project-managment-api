@@ -4,6 +4,8 @@ using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +54,30 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    const int retries = 10;
+    var delay = TimeSpan.FromSeconds(5);
+
+    for (var i = 0; i < retries; i++)
+    {
+        try
+        {
+            dbContext.Database.Migrate();
+            break;
+        }
+        catch
+        {
+            if (i == retries - 1)
+                throw;
+
+            Thread.Sleep(delay);
+        }
+    }
+}
 
 app.Run();
 

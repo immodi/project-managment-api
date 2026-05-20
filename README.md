@@ -127,7 +127,7 @@ $env:Jwt__ExpiryMinutes="60"
 # Apply Database Migrations
 
 ```bash
-dotnet ef database update --project ProjectManagement/src/Infrastructure --startup-project ProjectManagement/src/ProjectManagement.Api
+dotnet ef database update --project ProjectManagement/src/Infrastructure --startup-project ProjectManagement/src/API
 ```
 
 ---
@@ -135,7 +135,19 @@ dotnet ef database update --project ProjectManagement/src/Infrastructure --start
 # Run the API
 
 ```bash
-dotnet run --project ProjectManagement/src/ProjectManagement.Api
+dotnet run --project ProjectManagement/src/API
+```
+
+The API will run at:
+
+```txt
+http://localhost:5000
+```
+
+Swagger documentation:
+
+```txt
+http://localhost:5000/swagger
 ```
 
 ---
@@ -143,7 +155,7 @@ dotnet run --project ProjectManagement/src/ProjectManagement.Api
 # Running Tests
 
 ```bash
-dotnet test ProjectManagement/tests/Tests
+dotnet run --project ProjectManagement/tests/Tests
 ```
 
 ---
@@ -153,7 +165,7 @@ dotnet test ProjectManagement/tests/Tests
 Swagger/OpenAPI documentation is available at:
 
 ```txt
-/swagger
+http://localhost:5000/swagger
 ```
 
 ---

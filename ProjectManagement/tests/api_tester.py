@@ -6,7 +6,7 @@ import urllib.error
 from datetime import datetime, timedelta
 from typing import Any
 
-BASE_URL = "http://localhost:5094/api"
+BASE_URL = "http://localhost:5000/api"
 
 
 class Colors:
