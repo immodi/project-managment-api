@@ -203,18 +203,6 @@ http://localhost:5094/swagger
 dotnet run --project ProjectManagement/tests/Tests
 ```
 
----
-
-# API Documentation
-
-Swagger/OpenAPI documentation is available at:
-
-```txt
-http://localhost:5094/swagger
-```
-
----
-
 # Authentication
 
 The API uses JWT Bearer Authentication.
