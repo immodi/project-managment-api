@@ -63,25 +63,21 @@ Key practices used:
 
 # Running the Project
 
-## Option 1 — Docker (Recommended)
+## Option 1 — Docker Compose (Recommended)
 
-### Run Containers
+### Start Services
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
-Docker Compose automatically provides all required environment variables.
-
----
-
-## API URL
+The API will be available at:
 
 ```txt
 http://localhost:5000
 ```
 
-## Swagger Documentation
+Swagger:
 
 ```txt
 http://localhost:5000/swagger
@@ -94,16 +90,69 @@ http://localhost:5000/swagger
 ## Requirements
 
 - .NET 9 SDK
-- SQL Server
+- Docker
 
 ---
 
-## Set Environment Variables
-
-### Linux/macOS
+# Clone Repository
 
 ```bash
-export ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=ProjectManagementDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+git clone https://github.com/immodi/project-managment-api.git
+
+cd project-managment-api
+```
+
+---
+
+# Start SQL Server Container
+
+Remove old container if it already exists:
+
+```bash
+docker rm -f projectmanagement-sql
+```
+
+Run SQL Server:
+
+```bash
+docker run \
+-e "ACCEPT_EULA=Y" \
+-e "MSSQL_SA_PASSWORD=YourStrong@Passw0rd" \
+-p 1433:1433 \
+--name projectmanagement-sql \
+-d mcr.microsoft.com/mssql/server:2022-latest
+```
+
+Wait until SQL Server is ready:
+
+```bash
+docker logs -f projectmanagement-sql
+```
+
+You should see:
+
+```txt
+SQL Server is now ready for client connections
+```
+
+---
+
+# Restore Packages
+
+```bash
+dotnet restore
+```
+
+---
+
+# Environment Variables
+
+## Linux/macOS
+
+```bash
+export ASPNETCORE_ENVIRONMENT="Development"
+
+export ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=ProjectManagementDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;Encrypt=False"
 
 export Jwt__Key="THIS_IS_A_SUPER_SECRET_KEY_CHANGE_IT"
 export Jwt__Issuer="ProjectManagement"
@@ -111,10 +160,12 @@ export Jwt__Audience="ProjectManagementUsers"
 export Jwt__ExpiryMinutes="60"
 ```
 
-### Windows PowerShell
+## Windows PowerShell
 
 ```powershell
-$env:ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=ProjectManagementDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+$env:ASPNETCORE_ENVIRONMENT="Development"
+
+$env:ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=ProjectManagementDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;Encrypt=False"
 
 $env:Jwt__Key="THIS_IS_A_SUPER_SECRET_KEY_CHANGE_IT"
 $env:Jwt__Issuer="ProjectManagement"
@@ -124,30 +175,24 @@ $env:Jwt__ExpiryMinutes="60"
 
 ---
 
-# Apply Database Migrations
-
-```bash
-dotnet ef database update --project ProjectManagement/src/Infrastructure --startup-project ProjectManagement/src/API
-```
-
----
-
 # Run the API
 
 ```bash
-dotnet run --project ProjectManagement/src/API
+dotnet run --launch-profile http --project ProjectManagement/src/API
 ```
 
-The API will run at:
+The application automatically applies database migrations on startup.
+
+The API will run on a local development port similar to:
 
 ```txt
-http://localhost:5000
+http://localhost:5094
 ```
 
 Swagger documentation:
 
 ```txt
-http://localhost:5000/swagger
+http://localhost:5094/swagger
 ```
 
 ---
@@ -165,7 +210,7 @@ dotnet run --project ProjectManagement/tests/Tests
 Swagger/OpenAPI documentation is available at:
 
 ```txt
-http://localhost:5000/swagger
+http://localhost:5094/swagger
 ```
 
 ---
@@ -174,7 +219,7 @@ http://localhost:5000/swagger
 
 The API uses JWT Bearer Authentication.
 
-### Steps
+## Steps
 
 1. Register a user
 2. Login to receive JWT token
@@ -187,15 +232,9 @@ Bearer YOUR_TOKEN
 
 ---
 
-# Database Migrations
-
-Database migration files are included in the repository.
-
----
-
 # Notes
 
-- Environment variables are used for sensitive configuration.
+- Database migrations are automatically applied during application startup.
+- Reusing old Docker volumes can cause SQL Server login issues if passwords change.
 - Swagger is enabled for API testing and documentation.
-- The project is structured for scalability and maintainability.
 - Docker support is included for easier setup and execution.
